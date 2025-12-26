@@ -20,7 +20,7 @@ pipeline {
                 script {
                     try {
                         echo "Stop and remove container: ${CONTAINER_NAME}"
-                        sh "docker rm -f ${CONTAINER_NAME}"
+                        sh "sudo docker rm -f ${CONTAINER_NAME}"
                     } catch (Exception e) {
                         echo "Container was not running: ${e.getMessage()}"
                     }               
@@ -32,7 +32,7 @@ pipeline {
             steps {
                 echo "Starting new webserver container..."
                 sh """
-                    docker run -d \
+                    sudo docker run -d \
                         --name ${CONTAINER_NAME} \
                         -p ${HOST_PORT}:${CONTAINER_PORT} \
                         ${IMAGE_NAME}
