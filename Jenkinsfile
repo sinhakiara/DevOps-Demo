@@ -41,4 +41,22 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            echo "Pipeline execution completed."
+        }
+        success {
+            echo "Webserver is LIVE at: http://localhost:${HOST_PORT}"
+            echo "Test it with: curl http://localhost:${HOST_PORT}"
+        }
+        failure {
+            echo "Pipeline failed. Check the console output above."
+            // Optional: show container logs on failure for easier debugging
+            sh 'docker logs ${CONTAINER_NAME} || true'
+        }
+        cleanup {
+            // Optional extra safety: remove container even if pipeline was aborted
+            sh 'docker rm -f ${CONTAINER_NAME} || true'
+        }
+    }
 }
